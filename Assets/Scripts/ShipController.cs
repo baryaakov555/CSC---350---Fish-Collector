@@ -7,6 +7,15 @@ public class ShipController : MonoBehaviour
     private bool active = false;
     private GameObject currentTarget = null;
 
+    private Fuel fuel;
+    private float lowFuelThreshold = 20f;
+    private bool refuelMode = false;
+
+    private void Start()
+    {
+        fuel = new Fuel(50f, 100f);
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -27,9 +36,25 @@ public class ShipController : MonoBehaviour
             return;
         }
 
-        if (currentTarget == null && GameManager.Instance.fishList.Count > 0)
+        if (fuel.Amount <= lowFuelThreshold)
         {
-            currentTarget = GameManager.Instance.fishList[0];
+            refuelMode = true;
+        }
+        else if (refuelMode && fuel.Amount > lowFuelThreshold)
+        {
+            refuelMode = false;
+        }
+
+        if (currentTarget == null)
+        {
+            if (refuelMode)
+            {
+                currentTarget = GetNearestFuelTank();
+            }
+            else if (GameManager.Instance.fishList.Count > 0)
+            {
+                currentTarget = GameManager.Instance.fishList[0];
+            }
         }
 
         if (currentTarget == null)
@@ -42,12 +67,35 @@ public class ShipController : MonoBehaviour
 
     void MoveTowardTarget()
     {
-        if (currentTarget == null)
+        if (fuel.IsEmpty() || currentTarget == null)
         {
             return;
         }
 
         transform.position = Vector2.MoveTowards(transform.position, currentTarget.transform.position, moveSpeed * Time.deltaTime);
+        fuel.Consume(5f *Time.deltaTime);
+        Debug.Log("Fuel: " + fuel.Amount);
+    }
+
+    GameObject GetNearestFuelTank()
+    {
+        GameObject nearest = null;
+        float nearestDistance = Mathf.Infinity;
+
+        foreach (GameObject tank in GameManager.Instance.fuelTanks)
+        {
+            if (tank == null) continue;
+
+            float distance = Vector2.Distance(transform.position, tank.transform.position);
+
+            if (distance < nearestDistance)
+            {
+                nearest = tank;
+                nearestDistance = distance;
+            }
+        }
+
+        return nearest;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -62,6 +110,13 @@ public class ShipController : MonoBehaviour
                 Destroy(fish);
                 currentTarget = null;
             }
+        }
+
+        if (collision.CompareTag("Fuel"))
+        {
+            fuel.Add(25f);
+            Destroy(collision.gameObject);
+            return;
         }
     }
 }

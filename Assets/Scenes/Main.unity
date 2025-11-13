@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 298ed1ce7f886494bbebcf462bd37c47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 5
 --- !u!1 &1806806978
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,6 +537,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishPrefab: {fileID: 176616532308760941, guid: ab2912f58f7b306488270ef91c5b022d, type: 3}
   fishList: []
+  fuelPrefab: {fileID: 5988483343779216006, guid: dfa01af5773a5fe4eb480998552d4d3c, type: 3}
+  spawnInterval: 5
+  fuelTanks: []
 --- !u!4 &1806806980
 Transform:
   m_ObjectHideFlags: 0
