@@ -56,11 +56,12 @@ public class ShipController : MonoBehaviour
         {
             GameObject fish = collision.gameObject;
 
-            GameManager.Instance.fishList.Remove(fish);
-
-            Destroy(fish);
-
-            currentTarget = null;
+            if (fish == currentTarget)
+            {
+                GameManager.Instance.fishList.Remove(fish);
+                Destroy(fish);
+                currentTarget = null;
+            }
         }
     }
 }
