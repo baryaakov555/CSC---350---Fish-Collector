@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Fish
   - Fuel
+  - Obstacle
   layers:
   - Default
   - TransparentFX
