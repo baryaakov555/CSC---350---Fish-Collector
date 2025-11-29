@@ -1,17 +1,13 @@
 using UnityEngine;
 
-public class FuelPickup : MonoBehaviour
+public class FuelPickup : Collectible
 {
     public string fuelType = "basic";
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public override void ApplyEffect(EndlessShipController ship)
     {
-        EndlessShipController ship =
-            other.GetComponent<EndlessShipController>();
-
-        if (ship == null) return;
-
         ship.fuel.Refill(fuelType);
+        Debug.Log("Fuel after refill: " + ship.fuel.CurrentFuel);
         Destroy(gameObject);
     }
 }
