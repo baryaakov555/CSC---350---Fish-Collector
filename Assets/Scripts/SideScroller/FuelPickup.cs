@@ -3,11 +3,17 @@ using UnityEngine;
 public class FuelPickup : Collectible
 {
     public string fuelType = "basic";
+    public int scoreValue = 5;
 
     public override void ApplyEffect(EndlessShipController ship)
     {
         ship.fuel.Refill(fuelType);
-        Debug.Log("Fuel after refill: " + ship.fuel.CurrentFuel);
+
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.Add(scoreValue);
+        }
+
         Destroy(gameObject);
     }
 }

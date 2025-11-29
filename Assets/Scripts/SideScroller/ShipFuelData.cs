@@ -14,15 +14,13 @@ public class ShipFuelData
 
     public float CurrentFuel => currentFuel;
     public bool IsEmpty => currentFuel <= 0;
-    public bool IsLow => currentFuel <= 20f;
 
     public ShipFuelData(float max)
     {
         maxFuel = max;
         currentFuel = max;
 
-        fuelTypes["basic"] = 15f;
-        fuelTypes["premium"] = 30f;
+        fuelTypes["basic"] = 25f;
     }
 
     public void Consume(float amount)

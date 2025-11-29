@@ -7,7 +7,7 @@ public class EndlessShipController : MonoBehaviour
     private float topBound;
     private float bottomBound;
 
-    public ShipFuelData fuel = new ShipFuelData(100f);
+    public ShipFuelData fuel;
 
     [SerializeField] private float fuelDrainRate = 5f;
 
@@ -29,13 +29,9 @@ public class EndlessShipController : MonoBehaviour
         if (fuel.IsEmpty)
             v = 0f;
 
-        transform.Translate(
-            Vector2.up * v * verticalSpeed * Time.deltaTime,
-            Space.World
-        );
+        transform.Translate(Vector2.up * v * verticalSpeed * Time.deltaTime, Space.World);
 
-        if (Mathf.Abs(v) > 0.001f)
-            fuel.Consume(Mathf.Abs(v) * Time.deltaTime * fuelDrainRate);
+        fuel.Consume(Time.deltaTime * fuelDrainRate);
 
         Vector3 pos = transform.position;
         pos.y = Mathf.Clamp(pos.y, bottomBound, topBound);

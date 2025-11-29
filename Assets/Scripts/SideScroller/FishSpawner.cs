@@ -18,3 +18,4 @@ public class FishSpawner : MonoBehaviour
         Instantiate(fishPrefab, spawnPos, Quaternion.identity);
     }
 }
+
