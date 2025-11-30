@@ -9,6 +9,9 @@ public class EndlessShipController : MonoBehaviour
 
     public ShipFuelData fuel;
 
+    private bool invincible = false;
+    private float invincibleTimer = 0f;
+
     [SerializeField] private float fuelDrainRate = 5f;
 
     void Start()
@@ -36,6 +39,13 @@ public class EndlessShipController : MonoBehaviour
         Vector3 pos = transform.position;
         pos.y = Mathf.Clamp(pos.y, bottomBound, topBound);
         transform.position = pos;
+
+        if (invincible)
+        {
+            invincibleTimer -= Time.deltaTime;
+            if (invincibleTimer <= 0f)
+                invincible = false;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -52,8 +62,16 @@ public class EndlessShipController : MonoBehaviour
 
         if (other.CompareTag("Obstacle"))
         {
+            if (invincible) return;
+
             Debug.Log("DEAD");
             Time.timeScale = 0;
         }
+
+    }
+    public void EnableInvincibility(float t)
+    {
+        invincible = true;
+        invincibleTimer = t;
     }
 }
